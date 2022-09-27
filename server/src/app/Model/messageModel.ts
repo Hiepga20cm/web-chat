@@ -6,7 +6,6 @@ export interface message {
     recipient: string;
     text: String;
     media: Array<string>;
-    publicKey : Number
 }
 export interface messageModel extends message, Document { };
 
@@ -16,7 +15,6 @@ const Message: Schema = new Schema({
     recipient: { type: mongoose.Types.ObjectId, ref: 'User' },
     text:  String ,
     media: Array ,
-    publicKey : Number,
 },
     { timestamps: true }
 );

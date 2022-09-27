@@ -68,7 +68,8 @@ const User: Schema = new Schema(
         },
         friends: [{ type: mongoose.Types.ObjectId, ref: 'User' }],
         friendsRequest: [{ type: mongoose.Types.ObjectId, ref: 'User' }],
-        friendsWaitToAccept: [{ type: mongoose.Types.ObjectId, ref: 'User' }]
+        friendsWaitToAccept: [{ type: mongoose.Types.ObjectId, ref: 'User' }],
+        
     },
     { timestamps: true }
 );

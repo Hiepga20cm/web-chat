@@ -3,8 +3,6 @@ import bcrypt from 'bcrypt';
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
-
-
 const register = async (req: Request, res: Response) => {
     try {
         const { userName, passWord, firstName, lastName, email, gender } = req.body;
@@ -69,9 +67,9 @@ const findByEmail = async (req: Request, res: Response) => {
 
     try {
         const { userName } = req.body;
-        const user: any = await User.findOne({ userName: userName });
+        const user: any = await User.findOne({ userName: userName }).select('-passWord -_id -friendsRequest -friendsWaitToAccept -role -friends ');
         if (user) {
-            return res.json({ status: "200" });
+            res.json({user})
         } else {
             return res.json({ status: "user does not exists" });
         }
@@ -85,7 +83,7 @@ const getUser = async (req: Request, res: Response) => {
         const token1: any = req.headers.authorization?.split(" ")[1];
         const token = <any>jwt.verify(token1, '12345678');
 
-        const user: any = await User.findById(token._id);
+        const user: any = await User.findById(token._id).select('-passWord -friendsRequest -friendsWaitToAccept -role -friends');
         if (user) {
             res.status(200).json(user);
         } else {
@@ -99,10 +97,7 @@ const getUser = async (req: Request, res: Response) => {
 const getUserById = async (req: Request, res: Response) => {
 
     try {
-        console.log('id la:')
-        console.log(req.params.id);
-        const user = await User.findById(req.params.id);
-        console.log(user);
+        const user = await User.findById(req.params.id).select('-passWord -friendsRequest -friendsWaitToAccept -role -friends');
         if (user) {
             res.status(200).json(user);
         } else {
@@ -129,7 +124,7 @@ const friendRequest = async (req: Request, res: Response) => {
 
         const newUser = await User.findOneAndUpdate({ _id: req.params.id }, {
             $push: { friendsWaitToAccept: usercurrent._id }
-        }, { new: true }).select("-password")
+        }, { new: true }).select("-passWord")
 
         res.json({ newUser })
 
@@ -147,7 +142,7 @@ const acceptFriend = async (req: Request, res: Response) => {
         const newUser = await User.findOneAndUpdate({ _id: req.params.id }, {
             $push: { friends: req.params.id },
             $pull: { friendsRequest: req.params.id }
-        }, { new: true }).populate("friends", "-password")
+        }, { new: true }).populate("friends", "-passWord")
 
         await User.findOneAndUpdate({ _id: usercurrent._id }, {
             $push: { friends: req.params.id },
@@ -169,7 +164,7 @@ const refuseFriend = async (req: Request, res: Response) => {
 
         const newUser = await User.findOneAndUpdate({ _id: usercurrent }, {
             $pull: { friendsRequest: req.params.id }
-        }, { new: true }).select("-password")
+        }, { new: true }).select("-passWord")
 
         await User.findOneAndUpdate({ _id: req.params.id }, {
             $pull: { friendsWaitToAccept: req.params.id }
@@ -181,6 +176,18 @@ const refuseFriend = async (req: Request, res: Response) => {
         return res.status(500).json(err)
     }
 }
+const getAllFriend = async (req: Request, res: Response) => {
+    try {
+        const token1: any = req.headers.authorization?.split(" ")[1];
+        const token = <any>jwt.verify(token1, '12345678');
+        const usercurrent: any = await User.findById(token._id);
+
+        res.json(usercurrent.friends);
+
+    } catch (error) {
+        console.log(error);
+    }
+}
 export default {
     register,
     login,
@@ -189,5 +196,6 @@ export default {
     getUserById,
     friendRequest,
     acceptFriend,
-    refuseFriend
+    refuseFriend,
+    getAllFriend
 }

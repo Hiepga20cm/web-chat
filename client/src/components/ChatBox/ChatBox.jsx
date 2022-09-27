@@ -6,24 +6,27 @@ import { format } from "timeago.js";
 import CryptoJS from "react-native-crypto-js";//mahoa
 
 const P = 23, G = 6;
-const token = localStorage.getItem('token');
-// let publicKeyA = ((G ** (token.length)) % P);
 //let secretKey = publicKeyA ** (token.length);
 
-console.log('1')
+
 
 const ChatBox = ({ data, currentUserId, setSendMessage, receivedMessage }) => {
+
     const [userData, setUserData] = useState({});
     const [check, setCheck] = useState(false);
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
-    const [publicKey, setPublicKey] = useState('');
-    // console.log('day la tin nhan', setSendMessage);
-    console.log(currentUserId);
+    const privateKey = localStorage.getItem('token');
+    let privateKeyA = privateKey.length;
 
+    console.log('--------------');
+    console.log(userData);
+    //const publicKeyB = ((G ** (userData._id.length)) % P);
+    //console.log(publicKeyB)
     useEffect(() => {
         const getUserData = async () => {
             try {
+                console.log('aaa')
                 const userId = await data.recipients.find((id) => id !== currentUserId)
                 const data1 = await chatApi.getUserById(userId);
                 if (data1) {
@@ -46,7 +49,6 @@ const ChatBox = ({ data, currentUserId, setSendMessage, receivedMessage }) => {
                 const messages = await chatApi.getMessages(data._id);
                 if (messages) {
                     setMessages(messages);
-                    console.log('2')
                 }
             } catch (error) {
                 console.log(error);
@@ -61,11 +63,14 @@ const ChatBox = ({ data, currentUserId, setSendMessage, receivedMessage }) => {
     // Send Message
     const handleSend = async (e) => {
         e.preventDefault();
-
         const receiverId = data.recipients.find((id) => id !== currentUserId);
-        console.log('3');
-        let ciphertext = CryptoJS.AES.encrypt(newMessage, 'khoa by mat dung chung').toString();//ma hoa
-        const publicKeyA = ((G ** (token.length)) % P);
+        const privateKey = userData._id.length;
+        const publicKeyB = ((G ** privateKey) % P);
+        const Key = (publicKeyB ** privateKeyA) % P;
+        console.log(Key);
+        console.log(`llll`);
+        let ciphertext = CryptoJS.AES.encrypt(newMessage, `${Key}`).toString();//ma hoa
+        //const publicKeyA = ((G ** (token.length)) % P);
 
         //console.log(currentUserId.length)
         const message = {
@@ -75,7 +80,6 @@ const ChatBox = ({ data, currentUserId, setSendMessage, receivedMessage }) => {
             recipient: receiverId,
             // khóa công khai của người gửi x = (5^a mod 23) = 4  (a : khoa bi mat nguoi gui)
             // người nhận lấy khóa bí mật của mình tìm ra khóa bí mật chung // giả sử khóa bí mật a= 6
-            publicKeyA: publicKeyA
         }
         // send message to socket server
         setSendMessage({ ...message, receiverId })
@@ -84,7 +88,7 @@ const ChatBox = ({ data, currentUserId, setSendMessage, receivedMessage }) => {
             if (data) {
                 setMessages([...messages, data]);
                 setNewMessage("");
-                console.log('4')
+
             }
         }
         catch
@@ -115,20 +119,12 @@ const ChatBox = ({ data, currentUserId, setSendMessage, receivedMessage }) => {
 
         //if()// lấy độ dài mật khẩu để làm khóa bí mật khóa bí mật của server là 
         //const differ = tokena.length + (tokenb.length + secret.length)
-        
-        let bytes = CryptoJS.AES.decrypt(e, 'khoa by mat dung chung');
-        let originalText = bytes.toString(CryptoJS.enc.Utf8);
-        console.log(originalText);
-        return originalText;
 
-    }
-
-    const decryptOthers = (e) => {
-
-        //if()// lấy độ dài mật khẩu để làm khóa bí mật khóa bí mật của server là 
-        //const differ = tokena.length + (tokenb.length + secret.length)
-
-        let bytes = CryptoJS.AES.decrypt(e, 'khoa by mat dung chung');
+        const privateKey = userData._id.length;
+        const publicKeyB = ((G ** privateKey) % P);
+        const Key = (publicKeyB ** privateKeyA) % P;
+        console.log(Key);
+        let bytes = CryptoJS.AES.decrypt(e, `${Key}`);
         let originalText = bytes.toString(CryptoJS.enc.Utf8);
         console.log(originalText);
         return originalText;
@@ -159,13 +155,11 @@ const ChatBox = ({ data, currentUserId, setSendMessage, receivedMessage }) => {
                             />
                         </div>
 
-
-
                         {/* chat box messages */}
                         <div className='chat-body'>
                             {messages.map((message) => (
                                 <div key={message.id} ref={scroll} className={(message.sender === currentUserId) ? "message own" : "message"}>
-                                    <span>{(message.sender === currentUserId) ? decryptOwn(message.text) : decryptOthers(message.text)}</span>{" "}
+                                    <span>{ decryptOwn(message.text) }</span>{" "}
                                     <span>{format(message.createdAt)}</span>
                                 </div>
                             ))}

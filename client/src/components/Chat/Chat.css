@@ -64,7 +64,432 @@
     font-size: 20px;
   }
   
+  body {
+    background: #e1e1e1 !important;
+  }
+  .container {
+    background-color: #ffffff !important;
+  }
+  .header-top1 {
+    margin-bottom: 24px;
+  }
   
+  .search-box {
+    margin-top: 24px;
+  }
+  .search {
+    position: relative;
+  }
+  
+  .search-icon {
+    display: inline;
+    color: #a9a9a9;
+    position: absolute;
+    left: 20px;
+    line-height: 40px;
+  }
+  .search-input {
+    border: none;
+    width: 100%;
+    height: 36px;
+    background-color: #f2f3f5;
+    color: #a9a9a9;
+    border-radius: 70px;
+    padding: 8px;
+    padding-left: 43px;
+    font-weight: 400;
+    font-size: 14px;
+  }
+  ::placeholder {
+    color: #a9a9a9;
+  }
+  .search-input:focus {
+    outline: none;
+  }
+  
+  .status-box {
+    margin-top: 26px;
+  }
+  .status-title {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 16px;
+  }
+  .status-users {
+    overflow-x: scroll;
+  } 
+  .status-users::-webkit-scrollbar {
+    height: 5px; 
+  }
+  .status-users::-webkit-scrollbar-track {
+    background: none;
+  }
+  .status-users::-webkit-scrollbar-thumb {
+    background: #9fea95; 
+    border-radius: 999px;
+  }
+  .status-users::-webkit-scrollbar-thumb:hover {
+    background-color: #61c554;
+    cursor: pointer;
+  }
+   .status-user {
+    margin-top: 14px;
+    display: flex;
+    align-items: center;
+  }
+  .status-user::-webkit-scrollbar {
+    display: none;
+  }
+  .status-user .row {
+    flex-wrap: unset;
+  }
+  .user-item {
+    width: 57px;
+    height: 80px;
+    margin: 0 5px;
+  }
+  .user-item:hover {
+    filter: drop-shadow(0px 5px 15px rgba(54, 206, 0, 0.3));
+    cursor: pointer;
+    transition: all 0.2s ease-in;
+  }
+  .add-box {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 12px;
+    background-color: #f2f2f2;
+    border-radius: 50%;
+  }
+  
+  .add-box i {
+    color: #36ce00;
+    line-height: 50px;
+    font-size: 40px;
+  }
+  
+  .user-image {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 12px;
+    border-radius: 50%;
+    border: 2px solid #36ce00;
+    /* background: url(./Image/Đăng_alo.jpg) top center / cover no-repeat; */
+  }
+  .user-name {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 16px;
+  }
+  
+  .user {
+    margin-top: 14px;
+  }
+  .user-thumbnail {
+  }
+  .user-meta {
+  }
+  .user-avt {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  .username {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
+  }
+  .user-content {
+    width: 205px;
+    height: 16px;
+    white-space: nowrap;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    color: #8a8a8a;
+    margin-top: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .user-wrapper:hover {
+    background-color: #f1f4f6;
+    cursor: pointer;
+    transition: all 0.2s ease-in;
+  }
+  
+  /* box-chat */
+  .box-chat-wrapper {
+    border-left: 1px solid #f2f3f5;
+    border-right: 1px solid #f2f3f5;
+  }
+  .box-chat-header {
+    margin-top: 10px;
+    margin-left: 20px;
+  }
+  .user-meta {
+    margin-top: 6px;
+  }
+  .user-status {
+    margin-top: 6px;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 14px;
+    color: #b9bec4;
+  }
+  .header-right .contact-call,
+  .header-right .contact-facetime {
+    margin-top: 0px;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .box-chat {
+    margin-top: 12px;
+    width: 100%;
+    height: 590px;
+    background: rgba(241, 244, 247, 0.6);
+    position: relative;
+    overflow-y: scroll;
+  }
+  /* box-chat-content */
+  .receive-wrapper {
+    margin: 26px 48% 26px 20px;
+  }
+  .messenger-receive {
+    background: #e8ecef;
+    border-radius: 10px;
+    padding: 15px;
+  }
+  .messenger-content-receive {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+  }
+  .send-wrapper {
+    margin: 26px 20px 26px 48%;
+  }
+  .messenger-send {
+    background: #61c554;
+    border-radius: 10px;
+    padding: 15px;
+  }
+  .messenger-content-send {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    color: #ffffff;
+    line-break: anywhere;
+  }
+  .time-receive,
+  .time-send {
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 13px;
+    color: #727272;
+    margin-top: 10px;
+  }
+  .time-receive {
+  }
+  .send-wrapper .time-send {
+    float: right;
+  }
+  .search-field {
+    display: flex;
+    align-items: center;
+  }
+  .box-chat-footer {
+    width: 100%;
+    position: absolute;
+    margin-bottom: 12px;
+    bottom: 0;
+  }
+  .input-wrapper {
+    width: 80%;
+    height: 50px;
+    margin: auto;
+    position: relative;
+  }
+  .input-icon1 {
+    position: absolute;
+    left: 15px;
+    top: 8px;
+    font-size: 22px;
+    color: #78787c;
+  }
+  .input-icon2 {
+    position: absolute;
+    top: 8px;
+    font-size: 22px;
+    color: #78787c;
+    right: 16px;
+    transform: rotateZ(45deg);
+  }
+  .input-box {
+    width: 100%;
+    height: 50px;
+    margin-bottom: 20px;
+    background: #ffffff;
+    box-shadow: 0px 7px 15px rgba(0, 0, 0, 0.05);
+    border-radius: 60px;
+    border: none;
+    font-size: 14px;
+    line-height: 16px;
+    padding-left: 46px;
+  }
+  .input-box:focus {
+    outline: none;
+  }
+  
+  /* contact */
+  
+  .contact-wrapper {
+  }
+  .contact-header {
+    margin-top: 20px;
+  }
+  .contact-icon i {
+    color: #bebebe !important;
+    cursor: pointer;
+  }
+  .contact-title {
+    font-weight: 700;
+    font-size: 14px;
+    margin-left: 16px;
+  }
+  .contact-image {
+    /* background: url(./Image/Đăng_alo.jpg) top center / cover no-repeat; */
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-top: 50px;
+  }
+  .contact-name {
+    font-weight: 700;
+    margin-top: 16px;
+    font-size: 22px;
+    line-height: 26px;
+    text-align: center;
+  }
+  .contact-status {
+    text-align: center;
+    margin-top: 6px;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 14px;
+    color: #b9bec4;
+  }
+  
+  .contact-facetime,
+  .contact-call {
+    width: 38px;
+    height: 38px;
+    text-align: center;
+    background: #f8f8f8;
+    border-radius: 50%;
+    margin-top: 20px;
+  }
+  .contact-call {
+    margin-left: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .contact-facetime {
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .contact-call i,
+  .contact-facetime i {
+    color: #bebebe;
+    line-height: 38px;
+  }
+  .contact-call:hover i,
+  .contact-facetime:hover i {
+    color: #78787c;
+    cursor: pointer;
+    transition: all 0.2s ease-in;
+  }
+  .about-wrapper {
+    margin-top: 26px;
+  }
+  .about-title {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 16px;
+  }
+  .about-content {
+    font-weight: 400;
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 16px;
+    color: #a2a2a2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .media-wrapper {
+    margin-top: 16px;
+  }
+  .media-title {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 16px;
+  }
+  .media-content {
+    margin-top: 10px;
+  }
+  .media-item {
+    /* background: url(./Image/Đăng_alo.jpg) top center / cover no-repeat; */
+    width: 66px;
+    height: 66px;
+    border-radius: 5px;
+    margin-left: 8px;
+  }
+  .media-item:first-child {
+    margin-left: 0px;
+  }
+  
+  .action-wrapper {
+    margin-top: 40px;
+  }
+  .action-item {
+    margin-top: 16px;
+    color: #cc3169;
+    cursor: pointer;
+  }
+  .action-item:hover {
+    color: #a9003e;
+    transition: all 0.2s ease-in;
+  }
+  .action-icon {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 16px;
+  }
+  .action-name {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 16px;
+    margin-left: 8px;
+  }  
+
+  .box-chat::-webkit-scrollbar {
+    width: 5px; 
+  }
+  .box-chat::-webkit-scrollbar-track {
+    background: none;
+  }
+  .box-chat::-webkit-scrollbar-thumb {
+    background: #9fea95; 
+    border-radius: 999px;
+  }
+  .box-chat::-webkit-scrollbar-thumb:hover {
+    background-color: #61c554;
+    cursor: pointer;
+  }
   @media screen and (max-width: 768px) {
    .Chat {
       grid-template-columns: 16% auto;

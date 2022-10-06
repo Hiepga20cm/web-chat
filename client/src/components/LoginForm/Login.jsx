@@ -1,21 +1,22 @@
-import React from 'react';
-import { useState } from 'react';
-import authApi from '../../api/authApi';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { useState } from "react";
+import authApi from "../../api/authApi";
+import { Link } from "react-router-dom";
 //import { GoogleLogin } from 'react-google-login';
-import './Login.css';
-import { useEffect } from 'react';
-import jwt_decode from 'jwt-decode';
+import "./Login.css";
+import { useEffect } from "react";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import jwt_decode from "jwt-decode";
+import { toast } from "react-toastify";
 
-const clientId = '12782240243-rccmn1g2bg9ulfi8ghsqesbv2udgephi.apps.googleusercontent.com';
+const clientId =
+  "12782240243-rccmn1g2bg9ulfi8ghsqesbv2udgephi.apps.googleusercontent.com";
 
 const Login = () => {
-
-  const [userName, setUserName] = useState('');
-  const [passWord, setPassWord] = useState('');
+  const [userName, setUserName] = useState("");
+  const [passWord, setPassWord] = useState("");
   const [user, setUser] = useState({});
   const [checklg, setCheckLg] = useState(false);
-
 
   async function loginUser(e) {
     e.preventDefault();
@@ -23,36 +24,25 @@ const Login = () => {
     try {
       const res = await authApi.login({
         userName: userName,
-        passWord: passWord
+        passWord: passWord,
       });
 
-      if (res.status === 'ok') {
-        localStorage.setItem('token', res.user);
-        localStorage.setItem('permission', res.permission);
-        window.location.reload();
-        alert('Đăng nhập thành công');
+      if (res.status === "ok") {
+        localStorage.setItem("token", res.user);
+        localStorage.setItem("permission", res.permission);
+        window.location.href = "/chat";
       } else {
-        alert('Đăng nhập thất bại');
-        //window.location.reload();
+        toast.error("Đăng nhập thất bại!");
       }
-
     } catch (error) {
-      console.log(error);
+      toast.error("Đăng nhập thất bại!");
     }
-
   }
   function handleCallbackResponse(response) {
-    console.log(response.credential);
     var userObject = jwt_decode(response.credential);
-   // console.log(userObject);
     setUser(userObject);
-    // console.log(userObject.email);
     setUserName(userObject.email);
-    console.log(userObject.sub);
     setPassWord(userObject.sub);
-    console.log(userObject.sub);
-    // console.log(userObject.jti);
-    //loginUser();
     register(userObject);
     if (checklg === false) {
       loginUser();
@@ -62,70 +52,117 @@ const Login = () => {
     /*global google*/
     google.accounts.id.initialize({
       client_id: clientId,
-      callback: handleCallbackResponse
+      callback: handleCallbackResponse,
     });
 
-    google.accounts.id.renderButton(
-      document.getElementById('signInDiv'),
-      { theme: 'outline', size: 'large' }
-    )
-  }, [])
+    google.accounts.id.renderButton(document.getElementById("signInDiv"), {
+      theme: "outline",
+      size: "large",
+    });
+  }, []);
 
   async function register(user) {
-
     try {
-
-      console.log(user);
       const res = await authApi.register({
         userName: user.email,
         passWord: user.sub,
         firstName: user.family_name,
         lastName: user.given_name,
         email: user.email,
-        avatar: user.picture
+        avatar: user.picture,
       });
 
-      if (res.status === 'ok') {
-        localStorage.setItem('token', res.user);
-        localStorage.setItem('permission', res.permission);
+      if (res.status === "ok") {
+        localStorage.setItem("token", res.user);
+        localStorage.setItem("permission", res.permission);
         setCheckLg(true);
+
         window.location.reload();
-        alert('Đăng ký thành công');
+        alert("Đăng ký thành công");
       } else {
-        alert('Đăng ký thất bại');
+        alert("Đăng ký thất bại");
         window.location.reload();
       }
-
     } catch (error) {
       console.log(error);
     }
   }
 
-
   return (
-    <div className="wrapper">
-      <div className="logo">
-        <img src="https://res.cloudinary.com/bluecyber/image/upload/v1659776402/bygtkd6vlf6pt1eyzgdh.jpg" alt="" />
-      </div>
-      <div className="text-center mt-4 name">
-        Chat Fun
-      </div>
-      <form className="p-3 mt-3" onSubmit={loginUser}>
-        <div className="form-field d-flex align-items-center">
-          <span className="far fa-user"></span>
-          <input type="text" name="userName" id="userName" placeholder="Username" value={userName} onChange={(e) => setUserName(e.target.value)} />
+    <section className="vh-100">
+      <div className="container py-5 h-100">
+        <div className="row d-flex align-items-center justify-content-center h-100">
+          <div className="col-md-8 col-lg-7 col-xl-6">
+            <img
+              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
+              className="img-fluid"
+              alt="Phone image"
+            />
+          </div>
+          <div className="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+            <ValidatorForm onSubmit={loginUser}>
+              <TextValidator
+                className="form-control form-control-lg mb-4"
+                variant="outlined"
+                label="UserName"
+                type="text"
+                onChange={(e) => setUserName(e.target.value)}
+                name="userName"
+                value={userName === "" ? null : userName}
+                validators={["required"]}
+                errorMessages={["this field is required"]}
+              />
+              <TextValidator
+                className="form-control form-control-lg mb-4"
+                variant="outlined"
+                label="Password"
+                type="password"
+                onChange={(e) => setPassWord(e.target.value)}
+                name="password"
+                value={passWord === "" ? null : passWord}
+                validators={["required"]}
+                errorMessages={["this field is required"]}
+              />
+
+              <div className="d-flex justify-content-around align-items-center mb-4">
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    id="form1Example3"
+                  />
+                  <label className="form-check-label" htmlFor="form1Example3">
+                    {" "}
+                    Remember me{" "}
+                  </label>
+                </div>
+                <Link to={"/register"}>Register?</Link>
+              </div>
+
+              <button
+                type="submit"
+                className="btn btn-primary btn-lg btn-block"
+              >
+                Login
+              </button>
+
+              <div className="divider d-flex align-items-center my-4">
+                <p className="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
+              </div>
+
+              <div
+                className="btn btn-primary btn-lg btn-block w-100"
+                style={{ backgroundColor: "#3b5998" }}
+                role="button"
+                id="signInDiv"
+              >
+                <i className="fab fa-facebook-f me-2"></i>Continue with Google
+              </div>
+            </ValidatorForm>
+          </div>
         </div>
-        <div className="form-field d-flex align-items-center">
-          <span className="fas fa-key"></span>
-          <input type="password" name="password" id="pwd" placeholder="Password" value={passWord} onChange={(e) => setPassWord(e.target.value)} />
-        </div>
-        <button className="btn mt-3" type="onSubmit" >Login</button>
-      </form>
-      <div className="text-center fs-6">
-        <Link to={''}>Forget password?</Link> or <Link to={'/register'}>Sign up</Link>
       </div>
-      <div id="signInDiv" ></div>
-    </div>
-  )
-}
+    </section>
+  );
+};
 export default Login;

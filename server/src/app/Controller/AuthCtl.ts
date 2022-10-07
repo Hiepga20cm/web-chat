@@ -67,12 +67,12 @@ const findByEmail = async (req: Request, res: Response) => {//username
 
     try {
         console.log(req.params.userName);
-        
-        const  userName  = req.params.userName;
+
+        const userName = req.params.userName;
         console.log(userName)
-        const user: any = await User.findOne({ userName: userName }).select('-passWord -_id -friendsRequest -friendsWaitToAccept -role -friends ');
+        const user: any = await User.find({ userName: { $regex: userName } }).select('-passWord -_id -friendsRequest -friendsWaitToAccept -role -friends ');
         if (user) {
-            res.json({user})
+            res.json({ user })
         } else {
             return res.json({ status: "user does not exists" });
         }

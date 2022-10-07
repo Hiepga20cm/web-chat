@@ -65,8 +65,6 @@ const ChatBox = ({ data, currentUserId, setSendMessage, receivedMessage }) => {
     const privateKey = userData._id.length;
     const publicKeyB = G ** privateKey % P;
     const Key = publicKeyB ** privateKeyA % P;
-    console.log(Key);
-    console.log(`llll`);
     let ciphertext = CryptoJS.AES.encrypt(newMessage, `${Key}`).toString(); //ma hoa
     //const publicKeyA = ((G ** (token.length)) % P);
 

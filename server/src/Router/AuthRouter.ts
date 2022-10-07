@@ -5,7 +5,7 @@ const router = Router();
 
 router.post('/register', AuthCtl.register);
 router.post('/login', AuthCtl.login);
-router.get('/findByEmail', AuthCtl.findByEmail);
+router.get('/findbyemail/:userName', AuthCtl.findByEmail);
 router.get('/getUser', AuthCtl.getUser);
 router.get('/getUserById/:id', AuthCtl.getUserById);
 router.get('/getAllFriend', AuthCtl.getAllFriend);

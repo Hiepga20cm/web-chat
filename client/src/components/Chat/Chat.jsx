@@ -85,7 +85,7 @@ const Chat = () => {
     const searchUser = async () => {
       try {
         console.log(userName);
-        const data = await chatApi.getUserByUserName({ userName: userName });
+        const data = await chatApi.getUserByUserName(userName);
         console.log(data);
       } catch (err) {
         console.log(err);

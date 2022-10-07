@@ -66,9 +66,9 @@ const login = async (req: Request, res: Response) => {
 const findByEmail = async (req: Request, res: Response) => {//username
 
     try {
-        console.log(req.body);
-        console.log(req.body.userName);
-        const { userName } = req.body;
+        console.log(req.params.userName);
+        
+        const  userName  = req.params.userName;
         console.log(userName)
         const user: any = await User.findOne({ userName: userName }).select('-passWord -_id -friendsRequest -friendsWaitToAccept -role -friends ');
         if (user) {

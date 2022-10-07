@@ -35,8 +35,8 @@ const chatApi = {
   },
   getUserByUserName: async (data) => {
     console.log("DSRESSESRSRER", data);
-    const url = "/auth/findByEmail";
-    return axiosClient.get(url, data);
+    const url = `/auth/findbyemail/${data}`;
+    return axiosClient.get(url);
   },
 };
 

@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import chatApi from "../../api/chatRequest";
 
-const Conversation = ({ data, currentUserId, online }) => {
+const Conversation = ({ data, currentUserId, online, receiverInfo }) => {
   const [userData, setUserData] = useState({});
 
   useEffect(() => {
@@ -12,6 +12,7 @@ const Conversation = ({ data, currentUserId, online }) => {
       try {
         const data = await chatApi.getUserById(userId);
         setUserData(data);
+        receiverInfo(data);
       } catch (error) {
         console.log(error);
       }

@@ -9,7 +9,13 @@ const P = 23,
   G = 6;
 //let secretKey = publicKeyA ** (token.length);
 
-const ChatBox = ({ data, currentUserId, setSendMessage, receivedMessage }) => {
+const ChatBox = ({
+  data,
+  currentUserId,
+  setSendMessage,
+  receivedMessage,
+  shouldOpenUserInfoDialog,
+}) => {
   const [userData, setUserData] = useState({});
   const [check, setCheck] = useState(false);
   const [messages, setMessages] = useState([]);
@@ -17,14 +23,11 @@ const ChatBox = ({ data, currentUserId, setSendMessage, receivedMessage }) => {
   const privateKey = localStorage.getItem("token");
   let privateKeyA = privateKey.length;
 
-  console.log("--------------");
-  console.log(userData);
   //const publicKeyB = ((G ** (userData._id.length)) % P);
   //console.log(publicKeyB)
   useEffect(() => {
     const getUserData = async () => {
       try {
-        console.log("aaa");
         const userId = await data.recipients.find((id) => id !== currentUserId);
         const data1 = await chatApi.getUserById(userId);
         if (data1) {
@@ -96,11 +99,9 @@ const ChatBox = ({ data, currentUserId, setSendMessage, receivedMessage }) => {
   };
   // Receive Message from parent component
   useEffect(() => {
-    //console.log("Message Arrived: ", receivedMessage)
     if (receivedMessage !== null && receivedMessage.conversation === data._id) {
       setMessages((prev) => [...prev, receivedMessage]);
     }
-    console.log("5");
   }, [receivedMessage, data]);
 
   // Always scroll to last Message
@@ -118,10 +119,8 @@ const ChatBox = ({ data, currentUserId, setSendMessage, receivedMessage }) => {
     const privateKey = userData._id.length;
     const publicKeyB = G ** privateKey % P;
     const Key = publicKeyB ** privateKeyA % P;
-    console.log(Key);
     let bytes = CryptoJS.AES.decrypt(e, `${Key}`);
     let originalText = bytes.toString(CryptoJS.enc.Utf8);
-    console.log(originalText);
     return originalText;
   };
 
@@ -181,7 +180,7 @@ const ChatBox = ({ data, currentUserId, setSendMessage, receivedMessage }) => {
                         width="16"
                         height="16"
                         fill="currentColor"
-                        class="bi bi-camera-video-fill"
+                        className="bi bi-camera-video-fill"
                         viewBox="0 0 16 16"
                       >
                         <path
@@ -196,13 +195,28 @@ const ChatBox = ({ data, currentUserId, setSendMessage, receivedMessage }) => {
                         width="16"
                         height="16"
                         fill="currentColor"
-                        class="bi bi-telephone-fill"
+                        className="bi bi-telephone-fill"
                         viewBox="0 0 16 16"
                       >
                         <path
                           fill-rule="evenodd"
                           d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"
                         />
+                      </svg>
+                    </div>
+                    <div
+                      className="contact-info"
+                      onClick={shouldOpenUserInfoDialog}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        fill="currentColor"
+                        className="bi bi-info-lg"
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="m9.708 6.075-3.024.379-.108.502.595.108c.387.093.464.232.38.619l-.975 4.577c-.255 1.183.14 1.74 1.067 1.74.72 0 1.554-.332 1.933-.789l.116-.549c-.263.232-.65.325-.905.325-.363 0-.494-.255-.402-.704l1.323-6.208Zm.091-2.755a1.32 1.32 0 1 1-2.64 0 1.32 1.32 0 0 1 2.64 0Z" />
                       </svg>
                     </div>
                   </div>

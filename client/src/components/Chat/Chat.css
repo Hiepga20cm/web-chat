@@ -260,6 +260,7 @@
     background: #e8ecef;
     border-radius: 10px;
     padding: 15px;
+    width: fit-content;
   }
   .messenger-content-receive {
     font-weight: 400;
@@ -268,6 +269,13 @@
   }
   .send-wrapper {
     margin: 26px 20px 26px 48%;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  .receive-wrapper .messenger-content-send {
+    color: black;
   }
   .messenger-send {
     background: #61c554;
@@ -390,7 +398,6 @@
     margin-top: 20px;
   }
   .contact-call {
-    margin-left: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -489,6 +496,21 @@
   .box-chat::-webkit-scrollbar-thumb:hover {
     background-color: #61c554;
     cursor: pointer;
+  }
+  .contact-info {
+    width: 38px;
+    height: 38px;
+    text-align: center;
+    background: rgb(248, 248, 248);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+  }
+  .contact-info:hover {
+    cursor: pointer;
+    background: rgb(248, 248, 248);
   }
   @media screen and (max-width: 768px) {
    .Chat {

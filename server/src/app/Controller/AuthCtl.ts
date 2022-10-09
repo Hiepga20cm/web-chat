@@ -70,7 +70,7 @@ const findByEmail = async (req: Request, res: Response) => {//username
 
         const userName = req.params.userName;
         console.log(userName)
-        const user: any = await User.find({ userName: { $regex: userName } }).select('-passWord -_id -friendsRequest -friendsWaitToAccept -role -friends ');
+        const user: any = await User.find({ userName: { $regex: userName } }).select('-passWord  -friendsRequest -friendsWaitToAccept -role -friends ');
         if (user) {
             res.json({ user })
         } else {

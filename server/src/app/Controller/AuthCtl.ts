@@ -81,7 +81,6 @@ const findByEmail = async (req: Request, res: Response) => {//username
     }
 }
 const getUser = async (req: Request, res: Response) => {
-
     try {
         const token1: any = req.headers.authorization?.split(" ")[1];
         const token = <any>jwt.verify(token1, '12345678');
@@ -143,8 +142,8 @@ const acceptFriend = async (req: Request, res: Response) => {
         const usercurrent: any = await User.findById(token._id);
 
         const newUser = await User.findOneAndUpdate({ _id: req.params.id }, {
-            $push: { friends: req.params.id },
-            $pull: { friendsRequest: req.params.id }
+            $push: { friends: usercurrent._id },
+            $pull: { friendsRequest: usercurrent._id }
         }, { new: true }).populate("friends", "-passWord")
 
         await User.findOneAndUpdate({ _id: usercurrent._id }, {
@@ -183,10 +182,9 @@ const getAllFriend = async (req: Request, res: Response) => {
     try {
         const token1: any = req.headers.authorization?.split(" ")[1];
         const token = <any>jwt.verify(token1, '12345678');
-        const usercurrent: any = await User.findById(token._id);
-
-        res.json(usercurrent.friends);
-
+        const usercurrent: any = await User.findById(token._id).select("friends")
+            .populate('friends', 'avatar userName');
+        res.json(usercurrent);
     } catch (error) {
         console.log(error);
     }

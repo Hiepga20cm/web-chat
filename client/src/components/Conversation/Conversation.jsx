@@ -53,7 +53,6 @@ const Conversation = ({ data, currentUserId, online, receiverInfo }) => {
             </div>
             <div className="user-meta">
               <div className="username">{userData?.fullName}</div>
-              <div className="user-content">Thank you very much, I am wait</div>
             </div>
           </div>
         </div>

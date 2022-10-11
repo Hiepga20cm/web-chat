@@ -20,6 +20,7 @@ const Chat = () => {
   const [shouldOpenUserInfoDialog, setShouldOpenUserInfoDialog] =
     useState(false);
   const [receiverInfo, setReceiverInfo] = useState({});
+  const [friendAll, setFriendAll] = useState([]);
   useEffect(() => {
     const getUserCurrent = async () => {
       try {
@@ -71,6 +72,21 @@ const Chat = () => {
     });
   });
 
+  //Get friend all
+  useEffect(() => {
+    const getFriendAll = async () => {
+      try {
+        const data = await chatApi.getFriendList();
+        if (data) {
+          setFriendAll(data?.friends);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getFriendAll();
+  }, []);
+
   const checkOnlineStatus = (conversations) => {
     const chatMember = conversations.recipients.find(
       (member) => member !== userCurrent._id
@@ -93,6 +109,16 @@ const Chat = () => {
     searchUser();
   };
 
+  const getUserData = async (data, currentUserId) => {
+    const userId = await data.recipients.find((id) => id !== currentUserId);
+    try {
+      const data = await chatApi.getUserById(userId);
+      setReceiverInfo(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleCreateMessage = (receiver) => {
     let obj = {
       sender: userCurrent._id,
@@ -100,6 +126,7 @@ const Chat = () => {
       text: "Hello",
       media: [],
     };
+
     const getConversation = async () => {
       try {
         const data = await chatApi.getConversation(userCurrent._id);
@@ -263,73 +290,23 @@ const Chat = () => {
               </div>
               <div className="status-users">
                 <div className="status-user">
-                  <div className="user-item">
-                    <div
-                      className="add-box text-center"
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        color: "#36ce00",
-                      }}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="45"
-                        height="45"
-                        fill="currentColor"
-                        className="bi bi-plus-circle"
-                        viewBox="0 0 16 16"
-                      >
-                        {" "}
-                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />{" "}
-                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />{" "}
-                      </svg>
-                    </div>
-                    <div className="user-name text-center">Add</div>
-                  </div>
-
-                  <div className="user-item">
-                    <div className="user-thumbnail d-flex justify-content-center">
-                      <div className="user-image"></div>
-                    </div>
-                    <div className="user-name text-center">Đăng</div>
-                  </div>
-
-                  <div className="user-item">
-                    <div className="user-thumbnail d-flex justify-content-center">
-                      <div className="user-image"></div>
-                    </div>
-                    <div className="user-name text-center">Đăng</div>
-                  </div>
-
-                  <div className="user-item">
-                    <div className="user-thumbnail d-flex justify-content-center">
-                      <div className="user-image"></div>
-                    </div>
-                    <div className="user-name text-center">Đăng</div>
-                  </div>
-
-                  <div className="user-item">
-                    <div className="user-thumbnail d-flex justify-content-center">
-                      <div className="user-image"></div>
-                    </div>
-                    <div className="user-name text-center">Đăng</div>
-                  </div>
-
-                  <div className="user-item">
-                    <div className="user-thumbnail d-flex justify-content-center">
-                      <div className="user-image"></div>
-                    </div>
-                    <div className="user-name text-center">Đăng</div>
-                  </div>
-
-                  <div className="user-item">
-                    <div className="user-thumbnail d-flex justify-content-center">
-                      <div className="user-image"></div>
-                    </div>
-                    <div className="user-name text-center">Đăng</div>
-                  </div>
+                  {friendAll?.map((friend, index) => {
+                    return (
+                      <div className="user-item" key={index}>
+                        <div className="user-thumbnail d-flex justify-content-center">
+                          <div
+                            className="user-image"
+                            style={{
+                              background: `url(${friend?.avatar}) top center / cover no-repeat`,
+                            }}
+                          ></div>
+                        </div>
+                        <div className="user-name text-center">
+                          {friend?.lastName}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -349,15 +326,15 @@ const Chat = () => {
                 <>
                   <div
                     key={conversation.id}
-                    onClick={() => setCurrentChat(conversation)}
+                    onClick={() => {
+                      setCurrentChat(conversation);
+                      getUserData(conversation, userCurrent._id);
+                    }}
                   >
                     <Conversation
                       data={conversation}
                       currentUserId={userCurrent._id}
                       online={checkOnlineStatus(conversation)}
-                      receiverInfo={(receiverInfo) =>
-                        setReceiverInfo(receiverInfo)
-                      }
                     />
                   </div>
                 </>

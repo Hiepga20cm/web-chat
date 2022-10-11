@@ -20,28 +20,46 @@ const ChatBox = ({
   const [check, setCheck] = useState(false);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const [isFriend, setIsFriend] = useState(false);
+  const [isFriendRequest, setIsFriendRequest] = useState(false);
+  const [isAccept, setIsAccept] = useState(false);
   const privateKey = localStorage.getItem("token");
   let privateKeyA = privateKey.length;
 
   //const publicKeyB = ((G ** (userData._id.length)) % P);
   //console.log(publicKeyB)
-  useEffect(() => {
-    const getUserData = async () => {
-      try {
-        const userId = await data.recipients.find((id) => id !== currentUserId);
-        const data1 = await chatApi.getUserById(userId);
-        if (data1) {
-          setUserData(data1);
-          setCheck(true);
-        }
-      } catch (error) {
-        console.log(error);
+  const getUserData = async () => {
+    try {
+      const userId = await data.recipients.find((id) => id !== currentUserId);
+      const data1 = await chatApi.getUserById(userId);
+      const currentUser = await chatApi.getUserById(currentUserId);
+
+      currentUser?.friends.find((friendId) => friendId === data1._id)
+        ? setIsFriend(true)
+        : setIsFriend(false);
+      currentUser?.friendsRequest.find((friendId) => friendId === data1._id)
+        ? setIsFriendRequest(true)
+        : setIsFriendRequest(false);
+      currentUser?.friendsWaitToAccept.find(
+        (friendId) => friendId === data1._id
+      )
+        ? setIsAccept(true)
+        : setIsAccept(false);
+      if (data1) {
+        setUserData(data1);
+        setCheck(true);
       }
-    };
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
     if (data !== null) {
       getUserData();
     }
   }, [data, currentUserId]);
+
+  useEffect(() => {}, [userData]);
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -122,6 +140,30 @@ const ChatBox = ({
     let bytes = CryptoJS.AES.decrypt(e, `${Key}`);
     let originalText = bytes.toString(CryptoJS.enc.Utf8);
     return originalText;
+  };
+
+  const handleAddFriend = (userId) => {
+    const addFriend = async () => {
+      try {
+        await chatApi.addFriend(userId);
+        getUserData();
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    addFriend();
+  };
+
+  const handleAccpet = (userId) => {
+    const acceptFriend = async () => {
+      try {
+        await chatApi.acceptFriend(userId);
+        getUserData();
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    acceptFriend();
   };
 
   return (
@@ -221,6 +263,80 @@ const ChatBox = ({
                     </div>
                   </div>
                 </div>
+              </div>
+              <div className="col-12">
+                {!isFriend && !isFriendRequest && !isAccept && (
+                  <div className="add-friend">
+                    <div
+                      className="add-friend-btn"
+                      onClick={() => handleAddFriend(userData?._id)}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        fill="currentColor"
+                        class="bi bi-person-plus-fill"
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                        <path
+                          fill-rule="evenodd"
+                          d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"
+                        />
+                      </svg>
+                      <span style={{ marginLeft: "10px" }}>Kết bạn</span>
+                    </div>
+                  </div>
+                )}
+                {isFriendRequest && (
+                  <div className="add-friend">
+                    <div
+                      className="add-friend-btn"
+                      //onClick={() => handleAddFriend(userData?._id)}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        fill="currentColor"
+                        class="bi bi-person-plus-fill"
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                        <path
+                          fill-rule="evenodd"
+                          d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"
+                        />
+                      </svg>
+                      <span style={{ marginLeft: "10px" }}>Chờ phản hồi</span>
+                    </div>
+                  </div>
+                )}
+                {isAccept && (
+                  <div className="add-friend">
+                    <div
+                      className="add-friend-btn"
+                      onClick={() => handleAccpet(userData?._id)}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        fill="currentColor"
+                        class="bi bi-person-plus-fill"
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                        <path
+                          fill-rule="evenodd"
+                          d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"
+                        />
+                      </svg>
+                      <span style={{ marginLeft: "10px" }}>Đồng ý</span>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
             {/* chat box messages */}

@@ -99,7 +99,7 @@ const getUser = async (req: Request, res: Response) => {
 const getUserById = async (req: Request, res: Response) => {
 
     try {
-        const user = await User.findById(req.params.id).select('-passWord -friendsRequest -friendsWaitToAccept -role -friends');
+        const user = await User.findById(req.params.id).select('-passWord -role ');
         if (user) {
             res.status(200).json(user);
         } else {

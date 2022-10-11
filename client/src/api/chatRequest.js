@@ -37,6 +37,18 @@ const chatApi = {
     const url = `/auth/findbyemail/${data}`;
     return axiosClient.get(url);
   },
+  addFriend: async (id) => {
+    const url = `/auth/user/${id}/friendRequest`;
+    return axiosClient.patch(url);
+  },
+  acceptFriend: async (id) => {
+    const url = `/auth/user/${id}/acceptFriend`;
+    return axiosClient.patch(url);
+  },
+  refuseFriend: async (id) => {
+    const url = `/auth/user/${id}/refuseFriend`;
+    return axiosClient.patch(url);
+  },
 };
 
 export default chatApi;

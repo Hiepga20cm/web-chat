@@ -8,6 +8,7 @@ import LogoSearch from "../LogoSearch/LogoSearch";
 import NavIcons from "../NavIcons/NavIcons";
 import { io } from "socket.io-client";
 import "./Chat.css";
+import { NavLink } from "react-router-dom";
 const Chat = () => {
   const socket = useRef();
   const [conversations, setConversations] = useState([]);
@@ -21,6 +22,7 @@ const Chat = () => {
     useState(false);
   const [receiverInfo, setReceiverInfo] = useState({});
   const [friendAll, setFriendAll] = useState([]);
+  const [isLogOut, setIsLogOut] = useState(false);
   useEffect(() => {
     const getUserCurrent = async () => {
       try {
@@ -150,6 +152,10 @@ const Chat = () => {
     getConversation();
   };
 
+  const handleLogOut = () => {
+    localStorage.removeItem("token");
+  };
+
   return (
     <div
       className="row container"
@@ -183,19 +189,36 @@ const Chat = () => {
         </div> */}
       <div className="col-3">
         <div className="row justify-content-center align-items-center">
-          <div className="col-3">
-            <img src="/Image/Ellipse 16.svg" alt="" />
-            <img src="/Image/Ellipse 15.svg" alt="" />
-            <img src="/Image/Ellipse 14.svg" alt="" />
-          </div>
-          <div className="col-9 d-flex justify-content-end">
-            <div className="btn btn-default" style={{ boxShadow: "none" }}>
-              <img className="edit" src={"./Image/Edit.svg"} alt="" />
+          <div
+            className="header-left d-flex"
+            style={{
+              alignItems: "center",
+              justifyContent: "space-between",
+              margin: "10px 0 0",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <div
+                className="user-avt"
+                style={{
+                  background: `url(${userCurrent?.avatar}) top center / cover no-repeat`,
+                }}
+              ></div>
+              <div className="user-meta">
+                <div className="user-name line-height">
+                  {userCurrent.fullName}{" "}
+                </div>
+              </div>
             </div>
-
-            <div className="btn btn-default" style={{ boxShadow: "none" }}>
-              <img src="./Image/Expand_down.svg" alt="" />
-            </div>
+            <NavLink
+              to={"/login"}
+              className="btn"
+              type="button"
+              style={{ marginLeft: "10px", float: "left" }}
+              onClick={handleLogOut}
+            >
+              Log out
+            </NavLink>
           </div>
         </div>
         <div

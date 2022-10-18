@@ -202,6 +202,7 @@ const ChatBox = ({
               <div className="col-12">
                 <div className="box-chat-header d-flex justify-content-between align-items-center">
                   <div className="header-left d-flex">
+                  <div className="online-dot"></div>
                     <div
                       className="user-avt"
                       style={{

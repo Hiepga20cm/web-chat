@@ -43,6 +43,7 @@ const Conversation = ({ data, currentUserId, online }) => {
         <div className="col-12 user-wrapper">
           <div className="user d-flex">
             <div className="user-thumbnail">
+            {online && <div className="online-dot"></div>}
               <div
                 className="user-avt"
                 style={{
@@ -52,6 +53,7 @@ const Conversation = ({ data, currentUserId, online }) => {
             </div>
             <div className="user-meta">
               <div className="username">{userData?.fullName}</div>
+              <span style={{color: online?"#51e200":""}}>{online? "Online" : "Offline"}</span>
             </div>
           </div>
         </div>

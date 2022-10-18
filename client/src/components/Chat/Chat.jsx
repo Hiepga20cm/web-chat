@@ -22,7 +22,7 @@ const Chat = () => {
     useState(false);
   const [receiverInfo, setReceiverInfo] = useState({});
   const [friendAll, setFriendAll] = useState([]);
-  const [isLogOut, setIsLogOut] = useState(false);
+
   useEffect(() => {
     const getUserCurrent = async () => {
       try {
@@ -284,6 +284,7 @@ const Chat = () => {
                         style={{ padding: "10px 0" }}
                       >
                         <div className="user-thumbnail">
+                        <div className="online-dot"></div>
                           <div
                             className="user-avt"
                             style={{

@@ -29,7 +29,7 @@ const Chat = () => {
   const [isOpenChangeProfileForm, setIsOpenChangeProfileForm] = useState(false);
   const [isOpenChangePasswordForm, setIsOpenChangePasswordForm] =
     useState(false);
-
+  const [isOnline, setIsOnline] = useState(false);
   useEffect(() => {
     const getUserCurrent = async () => {
       try {
@@ -118,8 +118,15 @@ const Chat = () => {
     searchUser();
   };
 
-  const getUserData = async (data, currentUserId) => {
-    const userId = await data.recipients.find((id) => id !== currentUserId);
+  const getUserData = async (conversations, currentUserId) => {
+    const chatMember = conversations.recipients.find(
+      (member) => member !== userCurrent._id
+    );
+    const online = onlineUsers.find((user) => user.userId === chatMember);
+    online ? setIsOnline(true) : setIsOnline(false);
+    const userId = await conversations.recipients.find(
+      (id) => id !== currentUserId
+    );
     try {
       const data = await chatApi.getUserById(userId);
       setReceiverInfo(data);
@@ -226,7 +233,7 @@ const Chat = () => {
                 width="24"
                 height="24"
                 fill="currentColor"
-                class="bi bi-gear"
+                className="bi bi-gear"
                 viewBox="0 0 16 16"
               >
                 <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
@@ -260,15 +267,6 @@ const Chat = () => {
                 </div>
               )}
             </div>
-            {/* <NavLink
-              to={"/login"}
-              className="btn"
-              type="button"
-              style={{ marginLeft: "10px", float: "left" }}
-              onClick={handleLogOut}
-            >
-              Log out
-            </NavLink> */}
           </div>
         </div>
         <div
@@ -426,6 +424,7 @@ const Chat = () => {
           currentUserId={userCurrent._id}
           setSendMessage={setSendMessage}
           receivedMessage={receivedMessage}
+          online={isOnline}
           shouldOpenUserInfoDialog={() =>
             setShouldOpenUserInfoDialog(!shouldOpenUserInfoDialog)
           }
@@ -482,7 +481,9 @@ const Chat = () => {
             <div className="row justify-content-center">
               <div className="col-12">
                 <div className="contact-name">{receiverInfo?.fullName}</div>
-                <div className="contact-status">Online</div>
+                <div className="contact-status">
+                  {isOnline ? "Online" : "Offline"}
+                </div>
               </div>
             </div>
             <div className="row">
@@ -497,7 +498,7 @@ const Chat = () => {
                     viewBox="0 0 16 16"
                   >
                     <path
-                      fill-rule="evenodd"
+                      fillRule="evenodd"
                       d="M0 5a2 2 0 0 1 2-2h7.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 4.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 13H2a2 2 0 0 1-2-2V5z"
                     />
                   </svg>
@@ -512,7 +513,7 @@ const Chat = () => {
                     viewBox="0 0 16 16"
                   >
                     <path
-                      fill-rule="evenodd"
+                      fillRule="evenodd"
                       d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"
                     />
                   </svg>
@@ -524,7 +525,7 @@ const Chat = () => {
                 <div className="about-wrapper">
                   <div className="about-title">About</div>
                   <div className="about-content">
-                    Hello My name is Đăng and I'm handsome
+                    Hello My name is {receiverInfo?.fullName} and I'm handsome
                   </div>
                 </div>
               </div>
@@ -560,7 +561,9 @@ const Chat = () => {
                         <path d="M11.354 4.646a.5.5 0 0 0-.708 0l-6 6a.5.5 0 0 0 .708.708l6-6a.5.5 0 0 0 0-.708z" />
                       </svg>
                     </div>
-                    <div className="action-name">Block Nghiêm Đăng</div>
+                    <div className="action-name">
+                      Block {receiverInfo?.fullName}
+                    </div>
                   </div>
                   <div className="action-item d-flex">
                     <div className="action-icon">
@@ -575,7 +578,9 @@ const Chat = () => {
                         <path d="M8.864 15.674c-.956.24-1.843-.484-1.908-1.42-.072-1.05-.23-2.015-.428-2.59-.125-.36-.479-1.012-1.04-1.638-.557-.624-1.282-1.179-2.131-1.41C2.685 8.432 2 7.85 2 7V3c0-.845.682-1.464 1.448-1.546 1.07-.113 1.564-.415 2.068-.723l.048-.029c.272-.166.578-.349.97-.484C6.931.08 7.395 0 8 0h3.5c.937 0 1.599.478 1.934 1.064.164.287.254.607.254.913 0 .152-.023.312-.077.464.201.262.38.577.488.9.11.33.172.762.004 1.15.069.13.12.268.159.403.077.27.113.567.113.856 0 .289-.036.586-.113.856-.035.12-.08.244-.138.363.394.571.418 1.2.234 1.733-.206.592-.682 1.1-1.2 1.272-.847.283-1.803.276-2.516.211a9.877 9.877 0 0 1-.443-.05 9.364 9.364 0 0 1-.062 4.51c-.138.508-.55.848-1.012.964l-.261.065zM11.5 1H8c-.51 0-.863.068-1.14.163-.281.097-.506.229-.776.393l-.04.025c-.555.338-1.198.73-2.49.868-.333.035-.554.29-.554.55V7c0 .255.226.543.62.65 1.095.3 1.977.997 2.614 1.709.635.71 1.064 1.475 1.238 1.977.243.7.407 1.768.482 2.85.025.362.36.595.667.518l.262-.065c.16-.04.258-.144.288-.255a8.34 8.34 0 0 0-.145-4.726.5.5 0 0 1 .595-.643h.003l.014.004.058.013a8.912 8.912 0 0 0 1.036.157c.663.06 1.457.054 2.11-.163.175-.059.45-.301.57-.651.107-.308.087-.67-.266-1.021L12.793 7l.353-.354c.043-.042.105-.14.154-.315.048-.167.075-.37.075-.581 0-.211-.027-.414-.075-.581-.05-.174-.111-.273-.154-.315l-.353-.354.353-.354c.047-.047.109-.176.005-.488a2.224 2.224 0 0 0-.505-.804l-.353-.354.353-.354c.006-.005.041-.05.041-.17a.866.866 0 0 0-.121-.415C12.4 1.272 12.063 1 11.5 1z" />
                       </svg>
                     </div>
-                    <div className="action-name">Report Nghiêm Đăng</div>
+                    <div className="action-name">
+                      Report {receiverInfo?.fullName}
+                    </div>
                   </div>
                   <div className="action-item d-flex">
                     <div className="action-icon">

@@ -7,7 +7,8 @@
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@iconscout/react-unicons": "^1.1.6",
-    "@mui/material": "^5.10.7",
+    "@mui/icons-material": "^5.10.9",
+    "@mui/material": "^5.10.10",
     "@mui/styled-engine-sc": "^5.10.6",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
@@ -27,7 +28,7 @@
     "react-scripts": "5.0.1",
     "react-toastify": "^9.0.8",
     "socket.io-client": "^4.5.1",
-    "styled-components": "^5.3.5",
+    "styled-components": "^5.3.6",
     "timeago.js": "^4.0.2",
     "web-vitals": "^2.1.4"
   },

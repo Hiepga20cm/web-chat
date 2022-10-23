@@ -49,6 +49,14 @@ const chatApi = {
     const url = `/auth/user/${id}/refuseFriend`;
     return axiosClient.patch(url);
   },
+  changeProfile: async (data) => {
+    const url =  `/auth/user/editProfile`;
+    return axiosClient.patch(url, data)
+  },
+  changePassword: async (data) => {
+    const url = `/auth/user/changePassword`;
+    return axiosClient.get(url, data)
+  }
 };
 
 export default chatApi;

@@ -24,6 +24,7 @@ function ChangePasswordForm({ handleClose, open }) {
         newPassword: newPassword,
       };
       chatApi.changePassword(data);
+      handleClose();
       toast.success("Change Profile Success!");
     } catch (error) {
       console.log(error);

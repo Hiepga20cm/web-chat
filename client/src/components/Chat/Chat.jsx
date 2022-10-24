@@ -562,6 +562,16 @@ const Chat = () => {
                 </div>
               </div>
             </div>
+            <div className="row">
+              <div className="col-12">
+                <div className="about-wrapper">
+                  <div className="about-title">Email</div>
+                  <div className="about-content">
+                    {receiverInfo?.email}
+                  </div>
+                </div>
+              </div>
+            </div>
             {/* <div className="row">
               <div className="col-12">
                 <div className="media-wrapper">

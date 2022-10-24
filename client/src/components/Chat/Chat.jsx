@@ -119,7 +119,7 @@ const Chat = () => {
   };
 
   const getUserData = async (conversations, currentUserId) => {
-
+    console.log(conversations);
     const chatMember = conversations.recipients.find(
       (member) => member !== userCurrent._id
     );
@@ -364,11 +364,14 @@ const Chat = () => {
               <div className="status-users">
                 <div className="status-user">
                   {friendAll?.map((friend, index) => {
-                    let conversation = conversations.filter((conversation) => {return conversation.recipient === friend._id});
+                    let conversation = conversations.filter((item) => {
+                      return item.recipient === friend._id;
+                    });
+
                     return (
-                      <div 
-                        className="user-item" 
-                        key={index} 
+                      <div
+                        className="user-item"
+                        key={index}
                         onClick={() => {
                           setCurrentChat(conversation[0]);
                           getUserData(conversation[0], userCurrent._id);
@@ -541,6 +544,26 @@ const Chat = () => {
             </div>
             <div className="row">
               <div className="col-12">
+                <div className="about-wrapper">
+                  <div className="about-title">Story</div>
+                  <div className="about-content">
+                    {receiverInfo?.story}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-12">
+                <div className="about-wrapper">
+                  <div className="about-title">Address</div>
+                  <div className="about-content">
+                    {receiverInfo?.address}
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* <div className="row">
+              <div className="col-12">
                 <div className="media-wrapper">
                   <div className="media-title">Media,links and doc</div>
                   <div className="media-content d-flex flex-wrap">
@@ -551,7 +574,7 @@ const Chat = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <div className="row">
               <div className="col-12">

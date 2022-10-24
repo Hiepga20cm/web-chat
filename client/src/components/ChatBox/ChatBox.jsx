@@ -373,7 +373,7 @@ const ChatBox = ({
             <div className="row justify-content-center align-items-center g-2">
               <div className="col-12">
                 <div className="box-chat">
-                  {messages.map((message, index) => (
+                  {messages.map((message) => (
                     <div
                       key={message.id}
                       ref={scroll}

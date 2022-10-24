@@ -20,18 +20,6 @@ const createMessage = async (req: Request, res: Response) => {
             recipient: recipient,
             sender: sender
         }, { new: true, upsert: true })
-
-        const newMessage = new messageModel({
-            conversation: newConversation._id,
-            sender,
-            call,
-            recipient,
-            text,
-            media
-        })
-
-        await newMessage.save()
-
         res.json({ msg: 'Create Success!' })
 
     } catch (error) {

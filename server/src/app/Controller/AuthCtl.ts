@@ -310,6 +310,31 @@ const getFile = async (req: Request, res: Response) => {
     console.log(error);
   }
 };
+const cancelFriend = async (req: Request, res: Response) => {
+  try {
+    const token1: any = req.headers.authorization?.split(" ")[1];
+    const token = <any>jwt.verify(token1, "12345678");
+    const newUser = await User.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        $pull: { friendsWaitToAccept: token._id },
+      },
+      { new: true }
+    ).select("-password");
+
+    await User.findOneAndUpdate(
+      { _id: token._id },
+      {
+        $pull: { friendsRequest: req.params.id },
+      },
+      { new: true }
+    );
+
+    res.json({ newUser });
+  } catch (err) {
+    return res.status(500).json({ err });
+  }
+};
 export default {
   getFile,
   editProfile,
@@ -321,6 +346,7 @@ export default {
   getUserById,
   friendRequest,
   acceptFriend,
+  cancelFriend,
   refuseFriend,
   getAllFriend,
 };

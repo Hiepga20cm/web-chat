@@ -45,6 +45,10 @@ const chatApi = {
     const url = `/auth/user/${id}/acceptFriend`;
     return axiosClient.patch(url);
   },
+  cancelRequestAddFriend: async (id) => {
+    const url = `/auth/user/${id}/cancelFriend`;
+    return axiosClient.patch(url);
+  },
   refuseFriend: async (id) => {
     const url = `/auth/user/${id}/refuseFriend`;
     return axiosClient.patch(url);

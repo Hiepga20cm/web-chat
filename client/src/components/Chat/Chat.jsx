@@ -119,6 +119,7 @@ const Chat = () => {
   };
 
   const getUserData = async (conversations, currentUserId) => {
+
     const chatMember = conversations.recipients.find(
       (member) => member !== userCurrent._id
     );
@@ -363,8 +364,16 @@ const Chat = () => {
               <div className="status-users">
                 <div className="status-user">
                   {friendAll?.map((friend, index) => {
+                    let conversation = conversations.filter((conversation) => {return conversation.recipient === friend._id});
                     return (
-                      <div className="user-item" key={index}>
+                      <div 
+                        className="user-item" 
+                        key={index} 
+                        onClick={() => {
+                          setCurrentChat(conversation[0]);
+                          getUserData(conversation[0], userCurrent._id);
+                        }}
+                      >
                         <div className="user-thumbnail d-flex justify-content-center">
                           <div
                             className="user-image"

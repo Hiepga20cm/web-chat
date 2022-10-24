@@ -170,7 +170,8 @@ const ChatBox = ({
   const handleCancelRequest = (userId) => {
     const cancelRequestAddFriend = async () => {
       try {
-
+        await chatApi.cancelRequestAddFriend(userId);
+        getUserData();
       }catch (error) {
         console.log(error)
       }

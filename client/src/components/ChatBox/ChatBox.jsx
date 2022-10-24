@@ -167,6 +167,17 @@ const ChatBox = ({
     acceptFriend();
   };
 
+  const handleCancelRequest = (userId) => {
+    const cancelRequestAddFriend = async () => {
+      try {
+
+      }catch (error) {
+        console.log(error)
+      }
+    }
+    cancelRequestAddFriend()
+  }
+
   return (
     <>
       <div className="box-chat-wrapper">
@@ -313,7 +324,7 @@ const ChatBox = ({
                           d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"
                         />
                       </svg>
-                      <span style={{ marginLeft: "10px" }}>Chờ phản hồi</span>
+                      <span style={{ marginLeft: "10px" }} onClick={handleCancelRequest}>Hủy Yêu Cầu</span>
                     </div>
                   </div>
                 )}

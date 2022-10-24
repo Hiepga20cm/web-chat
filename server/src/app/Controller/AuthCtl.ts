@@ -261,11 +261,12 @@ const editProfile = async (req: Request, res: Response) => {
       return res.status(400).json({ msg: "Please add your last name." });
     const token1: any = req.headers.authorization?.split(" ")[1];
     const token = <any>jwt.verify(token1, "12345678");
-    const user: any = await User.findByIdAndUpdate("634e1c53e257a91da2f825b5", {
+    const user: any = await User.findByIdAndUpdate(token._id, {
       firstName: firstName,
       lastName: lastName,
       story: story,
       address: address,
+      fullName: firstName + " " + lastName,
     }).select("-passWord");
     res.json(user + "success");
   } catch (error) {

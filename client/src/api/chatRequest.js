@@ -54,11 +54,11 @@ const chatApi = {
     return axiosClient.patch(url);
   },
   changeProfile: async (data) => {
-    const url =  `/auth/user/editProfile`;
+    const url =  `/auth/editProfile`;
     return axiosClient.patch(url, data)
   },
   changePassword: async (data) => {
-    const url = `/auth/user/changePassword`;
+    const url = `/auth/changePassword`;
     return axiosClient.get(url, data)
   }
 };

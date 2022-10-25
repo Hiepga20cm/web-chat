@@ -365,7 +365,10 @@ const Chat = () => {
                 <div className="status-user">
                   {friendAll?.map((friend, index) => {
                     let conversation = conversations.filter((item) => {
-                      return item.recipient === friend._id;
+                      return (
+                        item.recipients[0] === friend._id ||
+                        item.recipients[1] === friend._id
+                      );
                     });
 
                     return (
@@ -546,9 +549,7 @@ const Chat = () => {
               <div className="col-12">
                 <div className="about-wrapper">
                   <div className="about-title">Story</div>
-                  <div className="about-content">
-                    {receiverInfo?.story}
-                  </div>
+                  <div className="about-content">{receiverInfo?.story}</div>
                 </div>
               </div>
             </div>
@@ -556,9 +557,7 @@ const Chat = () => {
               <div className="col-12">
                 <div className="about-wrapper">
                   <div className="about-title">Address</div>
-                  <div className="about-content">
-                    {receiverInfo?.address}
-                  </div>
+                  <div className="about-content">{receiverInfo?.address}</div>
                 </div>
               </div>
             </div>
@@ -566,9 +565,7 @@ const Chat = () => {
               <div className="col-12">
                 <div className="about-wrapper">
                   <div className="about-title">Email</div>
-                  <div className="about-content">
-                    {receiverInfo?.email}
-                  </div>
+                  <div className="about-content">{receiverInfo?.email}</div>
                 </div>
               </div>
             </div>

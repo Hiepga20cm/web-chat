@@ -18,13 +18,14 @@ function ChangePasswordForm({ handleClose, open }) {
   const [newPassword, setNewPassword] = useState("");
 
   const changePassword = async () => {
+    debugger;
     try {
       const data = {
         oldPassword: oldPassword,
         newPassword: newPassword,
       };
       chatApi.changePassword(data);
-      handleClose();
+      window.location.reload();
       toast.success("Change Profile Success!");
     } catch (error) {
       console.log(error);

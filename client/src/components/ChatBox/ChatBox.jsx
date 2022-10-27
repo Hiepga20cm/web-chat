@@ -4,6 +4,7 @@ import InputEmoji from "react-input-emoji";
 import "./ChatBox.css";
 import { format } from "timeago.js";
 import CryptoJS from "react-native-crypto-js"; //mahoa
+import { toast } from "react-toastify";
 
 const P = 23,
   G = 6;
@@ -60,8 +61,6 @@ const ChatBox = ({
     }
   }, [data, currentUserId]);
 
-  useEffect(() => {}, [userData]);
-
   useEffect(() => {
     const fetchMessages = async () => {
       try {
@@ -82,7 +81,12 @@ const ChatBox = ({
 
   // Send Message
   const handleSend = async (e) => {
+    debugger;
     e.preventDefault();
+    if (e.target.value === "" || e.target.value === undefined) {
+      toast.error("ko có nội dung tin nhắn");
+      return;
+    }
     const receiverId = data.recipients.find((id) => id !== currentUserId);
     const privateKey = userData._id.length;
     const publicKeyB = G ** privateKey % P;

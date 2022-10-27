@@ -33,6 +33,7 @@ function ChangeProfileForm({ userCurrent, handleClose, open }) {
         address: address,
       };
       chatApi.changeProfile(data);
+      window.location.reload();
       handleClose();
       toast.success("Change Profile Success!");
     } catch (error) {

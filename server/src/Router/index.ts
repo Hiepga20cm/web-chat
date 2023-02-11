@@ -6,5 +6,4 @@ import auth from '../../src/app/MiddleWare/auth';
 router.use('/auth', AuthRouter);
 router.use('/nhantin', auth.requireAuth, MessageRouter);
 
-
 export default router;

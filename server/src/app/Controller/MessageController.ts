@@ -20,18 +20,6 @@ const createMessage = async (req: Request, res: Response) => {
             recipient: recipient,
             sender: sender
         }, { new: true, upsert: true })
-
-        const newMessage = new messageModel({
-            conversation: newConversation._id,
-            sender,
-            call,
-            recipient,
-            text,
-            media
-        })
-
-        await newMessage.save()
-
         res.json({ msg: 'Create Success!' })
 
     } catch (error) {
@@ -42,7 +30,6 @@ const getConversations = async (req: Request, res: Response) => {
 
     try {
         const id = req.params.id;
-        console.log(id);
         if (id) {
             const conversations: any = await ConversationModel.find({
                 recipients: { $in: [id] }
@@ -63,11 +50,8 @@ const getConversations = async (req: Request, res: Response) => {
 const getMessages = async (req: Request, res: Response) => {
     try {
         const conversationId = req.params.id;
-        console.log(conversationId);
-        console.log('asdasd');
         const messages = await messageModel.find({ conversation: conversationId });
         if (messages) {
-            console.log(messages);
             res.status(200).json(messages);
         } else {
             res.status(404).json('notfound');
@@ -80,19 +64,16 @@ const getMessages = async (req: Request, res: Response) => {
 const addMessage = async (req: Request, res: Response) => {
     try {
         const { conversation, sender, text, recipient } = req.body;
-        console.log(req.body);
         const newMessage = new messageModel({
             conversation: conversation,
             sender: sender,
             recipient: recipient,
             text: text,
-
         })
 
         const result = await newMessage.save();
 
         res.status(200).json(result);
-
 
     } catch (error) {
         console.log(error);
